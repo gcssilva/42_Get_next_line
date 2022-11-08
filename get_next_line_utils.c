@@ -6,7 +6,7 @@
 /*   By: gsilva <gsilva@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:29:27 by gsilva            #+#    #+#             */
-/*   Updated: 2022/11/08 12:31:11 by gsilva           ###   ########.fr       */
+/*   Updated: 2022/11/08 13:05:46 by gsilva           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,27 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char *s1, char *s2, int j)
+char	*ft_strjoin(char **s1, char *s2, int j)
 {
 	char	*str;
 	int		i;
 
 	i = 0;
-	str = (char *)malloc(ft_strlen(&s1[j]) + ft_strlen(s2) + 1);
+	str = (char *)malloc(ft_strlen(&s1[0][j]) + ft_strlen(s2) + 1);
 	if (!str)
 		return (NULL);
-	while (s1 && s1[j])
-		str[i++] = s1[j++];
+	while (s1[0] && s1[0][j])
+		str[i++] = s1[0][j++];
 	while (s2 && *s2)
 		str[i++] = *s2++;
 	str[i] = 0;
+	if (s1[0])
+		free(s1[0]);
 	return (str);
 }
 
 char	*ft_read(char **next, int fd)
 {
-	char	*temp;
 	char	*buf;
 	int		len;
 
@@ -54,16 +55,12 @@ char	*ft_read(char **next, int fd)
 		if (len < 1)
 			break;
 		buf[len] = 0;
-		temp = ft_strjoin(*next, NULL, 0);
-		if (*next)
-			free(*next);
-		*next = ft_strjoin(temp, buf, 0);
-		free(temp);
+		*next = ft_strjoin(next, buf, 0);
 		if (ft_strchr(buf, '\n'))
 			break;
 	}
 	free(buf);
-	if (!*next)
+	if (!next[0])
 		return (NULL);
 	return (ft_line(next));
 }
@@ -80,7 +77,6 @@ int		ft_strchr(char *str, int c)
 char	*ft_line(char **next)
 {
 	char	*line;
-	char	*temp;
 	int		i;
 	int		j;
 	
@@ -96,10 +92,6 @@ char	*ft_line(char **next)
 	while (++j < i)
 		line[j] = next[0][j];
 	line[j] = 0;
-	temp = ft_strjoin(*next, NULL, i);
-	if (*next)
-		free(*next);
-	*next = ft_strjoin(temp, NULL, 0);
-	free(temp);
+	*next = ft_strjoin(next, NULL, i);
 	return (line);
 }
