@@ -15,7 +15,7 @@
 int	ft_strlen(char *str)
 {
 	int	i;
-	
+
 	i = 0;
 	if (!str)
 		return (i);
@@ -53,11 +53,11 @@ char	*ft_read(char **next, int fd)
 	{
 		len = read(fd, buf, BUFFER_SIZE);
 		if (len < 1)
-			break;
+			break ;
 		buf[len] = 0;
 		*next = ft_strjoin(next, buf, 0);
 		if (ft_strchr(buf, '\n'))
-			break;
+			break ;
 	}
 	free(buf);
 	if (!next[0])
@@ -65,7 +65,7 @@ char	*ft_read(char **next, int fd)
 	return (ft_line(next));
 }
 
-int		ft_strchr(char *str, int c)
+int	ft_strchr(char *str, int c)
 {
 	while (*str && *str != c)
 		str++;
@@ -79,7 +79,7 @@ char	*ft_line(char **next)
 	char	*line;
 	int		i;
 	int		j;
-	
+
 	i = 0;
 	if (!**next)
 		return (NULL);
