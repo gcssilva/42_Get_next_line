@@ -6,7 +6,7 @@
 /*   By: gsilva <gsilva@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:29:27 by gsilva            #+#    #+#             */
-/*   Updated: 2022/11/08 15:05:24 by gsilva           ###   ########.fr       */
+/*   Updated: 2022/11/10 17:43:17 by gsilva           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,82 +16,87 @@ int	ft_strlen(char *str)
 {
 	int	i;
 
-	i = 0;
-	if (!str)
-		return (i);
-	while (str[i])
+	if (!str || !*str)
+		return (0);
+	i = 1;
+	while (str && str[i] && str[i - 1] != '\n')
 		i++;
 	return (i);
 }
 
-char	*ft_strjoin(char **s1, char *s2, int j)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*str;
 	int		i;
+	int		j;
 
+	if (*s2 == 0)
+		return (NULL);
 	i = 0;
-	str = (char *)malloc(ft_strlen(&s1[0][j]) + ft_strlen(s2) + 1);
+	str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!str)
 		return (NULL);
-	while (s1[0] && s1[0][j])
-		str[i++] = s1[0][j++];
-	while (s2 && *s2)
-		str[i++] = *s2++;
+	while (s1 && s1[i])
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2 && s2[j] && s2[j] != '\n')
+		str[i++] = s2[j++];
+	if (s2[j] == '\n')
+		str[i++] = '\n';
 	str[i] = 0;
-	if (s1[0])
-		free(s1[0]);
+	if (s1)
+		free(s1);
 	return (str);
 }
 
-char	*ft_read(char **next, int fd)
+char	*ft_read(char *next, char *str, int fd)
 {
-	char	*buf;
 	int		len;
 
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	str = ft_strjoin(str, next);
+	if (ft_strchr(next, '\n') > -1)
+	{
+		ft_strcpy(next, &next[ft_strchr(next, '\n') + 1]);
+		return (str);
+	}
 	while (1)
 	{
-		len = read(fd, buf, BUFFER_SIZE);
+		len = read(fd, next, BUFFER_SIZE);
 		if (len < 1)
 			break ;
-		buf[len] = 0;
-		*next = ft_strjoin(next, buf, 0);
-		if (ft_strchr(buf, '\n'))
-			break ;
+		next[len] = 0;
+		str = ft_strjoin(str, next);
+		if (ft_strchr(next, '\n') >= 0)
+		{
+			ft_strcpy(next, &next[ft_strchr(next, '\n') + 1]);
+			return (str);
+		}
 	}
-	free(buf);
-	if (!next[0])
-		return (NULL);
-	return (ft_line(next));
+	ft_strcpy(next, &next[ft_strlen(next)]);
+	return (str);
 }
 
 int	ft_strchr(char *str, int c)
 {
-	while (*str && *str != c)
-		str++;
-	if (!str || *str != c)
-		return (0);
-	return (1);
-}
-
-char	*ft_line(char **next)
-{
-	char	*line;
 	int		i;
-	int		j;
 
 	i = 0;
-	if (!**next)
-		return (NULL);
-	while (next[0][i] != '\n' && next[0][i])
+	while (str[i] && str[i] != c)
 		i++;
-	if (next[0][i] == '\n')
-		i++;
-	line = (char *)malloc(sizeof(char) * (i + 1));
-	j = -1;
-	while (++j < i)
-		line[j] = next[0][j];
-	line[j] = 0;
-	*next = ft_strjoin(next, NULL, i);
-	return (line);
+	if (!str[i])
+		return (-1);
+	return (i);
+}
+
+void	ft_strcpy(char *dest, char *src)
+{
+	size_t			i;
+
+	i = -1;
+	while (src[++i])
+		dest[i] = src[i];
+	dest[i] = 0;
 }

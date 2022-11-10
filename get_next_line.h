@@ -6,7 +6,7 @@
 /*   By: gsilva <gsilva@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:29:40 by gsilva            #+#    #+#             */
-/*   Updated: 2022/11/08 15:07:11 by gsilva           ###   ########.fr       */
+/*   Updated: 2022/11/10 17:41:01 by gsilva           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@
 
 char	*get_next_line(int fd);
 
-char	*ft_strjoin(char **s1, char *s2, int j);
-
-char	*ft_line(char **next);
+char	*ft_strjoin(char *s1, char *s2);
 
 int		ft_strchr(char *str, int c);
 
 int		ft_strlen(char *str);
 
-char	*ft_read(char **next, int fd);
+char	*ft_read(char *next, char *str, int fd);
+
+void	ft_strcpy(char *dest, char *src);
 
 #endif
