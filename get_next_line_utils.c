@@ -6,7 +6,7 @@
 /*   By: gsilva <gsilva@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:29:27 by gsilva            #+#    #+#             */
-/*   Updated: 2022/11/11 12:01:49 by gsilva           ###   ########.fr       */
+/*   Updated: 2022/11/14 17:41:56 by gsilva           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,19 @@ char	*ft_read(char *next, char *str, int fd)
 		ft_strcpy(next, &next[ft_strlen(next)]);
 		return (str);
 	}
-	while (1)
+	len = read(fd, next, BUFFER_SIZE);
+	if (len < 0)
 	{
-		len = read(fd, next, BUFFER_SIZE);
-		if (len < 1)
-			break ;
+		free(str);
+		return (NULL);
+	}
+	while (len > 0)
+	{
 		next[len] = 0;
 		str = ft_strjoin(str, next);
 		if (ft_strchr(next, '\n'))
 			break ;
+		len = read(fd, next, BUFFER_SIZE);
 	}
 	ft_strcpy(next, &next[ft_strlen(next)]);
 	return (str);

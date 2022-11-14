@@ -6,7 +6,7 @@
 /*   By: gsilva <gsilva@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:29:27 by gsilva            #+#    #+#             */
-/*   Updated: 2022/11/14 15:19:35 by gsilva           ###   ########.fr       */
+/*   Updated: 2022/11/14 17:43:10 by gsilva           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,11 @@ char	*ft_read(char *next, char *str, int fd)
 		return (str);
 	}
 	len = read(fd, next, BUFFER_SIZE);
+	if (len < 0)
+	{
+		free(str);
+		return (NULL);
+	}
 	while (len > 0)
 	{
 		next[len] = 0;
