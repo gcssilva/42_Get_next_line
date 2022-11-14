@@ -6,7 +6,7 @@
 /*   By: gsilva <gsilva@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:29:27 by gsilva            #+#    #+#             */
-/*   Updated: 2022/11/10 17:40:51 by gsilva           ###   ########.fr       */
+/*   Updated: 2022/11/11 12:01:49 by gsilva           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ char	*ft_read(char *next, char *str, int fd)
 	int		len;
 
 	str = ft_strjoin(str, next);
-	if (ft_strchr(next, '\n') > -1)
+	if (ft_strchr(next, '\n'))
 	{
-		ft_strcpy(next, &next[ft_strchr(next, '\n') + 1]);
+		ft_strcpy(next, &next[ft_strlen(next)]);
 		return (str);
 	}
 	while (1)
@@ -69,11 +69,8 @@ char	*ft_read(char *next, char *str, int fd)
 			break ;
 		next[len] = 0;
 		str = ft_strjoin(str, next);
-		if (ft_strchr(next, '\n') >= 0)
-		{
-			ft_strcpy(next, &next[ft_strchr(next, '\n') + 1]);
-			return (str);
-		}
+		if (ft_strchr(next, '\n'))
+			break ;
 	}
 	ft_strcpy(next, &next[ft_strlen(next)]);
 	return (str);
@@ -86,9 +83,9 @@ int	ft_strchr(char *str, int c)
 	i = 0;
 	while (str[i] && str[i] != c)
 		i++;
-	if (!str[i])
-		return (-1);
-	return (i);
+	if (str[i] == c)
+		return (1);
+	return (0);
 }
 
 void	ft_strcpy(char *dest, char *src)

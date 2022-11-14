@@ -6,7 +6,7 @@
 /*   By: gsilva <gsilva@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:29:06 by gsilva            #+#    #+#             */
-/*   Updated: 2022/11/10 15:02:25 by gsilva           ###   ########.fr       */
+/*   Updated: 2022/11/11 11:30:19 by gsilva           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*get_next_line(int fd)
 {
-	static char	next[BUFFER_SIZE];
+	static char	next[BUFFER_SIZE + 1];
 	char		*str;
 
 	str = NULL;

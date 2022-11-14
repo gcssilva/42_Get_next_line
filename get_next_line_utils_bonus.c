@@ -6,7 +6,7 @@
 /*   By: gsilva <gsilva@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:29:27 by gsilva            #+#    #+#             */
-/*   Updated: 2022/11/10 17:43:17 by gsilva           ###   ########.fr       */
+/*   Updated: 2022/11/14 15:19:35 by gsilva           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_strlen(char *str)
 	if (!str || !*str)
 		return (0);
 	i = 1;
-	while (str && str[i] && str[i - 1] != '\n')
+	while (str[i] && str[i - 1] != '\n')
 		i++;
 	return (i);
 }
@@ -30,7 +30,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	int		i;
 	int		j;
 
-	if (*s2 == 0)
+	if (s2[0] == 0)
 		return (NULL);
 	i = 0;
 	str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
@@ -57,23 +57,19 @@ char	*ft_read(char *next, char *str, int fd)
 	int		len;
 
 	str = ft_strjoin(str, next);
-	if (ft_strchr(next, '\n') > -1)
+	if (ft_strchr(next, '\n'))
 	{
-		ft_strcpy(next, &next[ft_strchr(next, '\n') + 1]);
+		ft_strcpy(next, &next[ft_strlen(next)]);
 		return (str);
 	}
-	while (1)
+	len = read(fd, next, BUFFER_SIZE);
+	while (len > 0)
 	{
-		len = read(fd, next, BUFFER_SIZE);
-		if (len < 1)
-			break ;
 		next[len] = 0;
 		str = ft_strjoin(str, next);
-		if (ft_strchr(next, '\n') >= 0)
-		{
-			ft_strcpy(next, &next[ft_strchr(next, '\n') + 1]);
-			return (str);
-		}
+		if (ft_strchr(next, '\n'))
+			break ;
+		len = read(fd, next, BUFFER_SIZE);
 	}
 	ft_strcpy(next, &next[ft_strlen(next)]);
 	return (str);
@@ -86,9 +82,9 @@ int	ft_strchr(char *str, int c)
 	i = 0;
 	while (str[i] && str[i] != c)
 		i++;
-	if (!str[i])
-		return (-1);
-	return (i);
+	if (str[i] == c)
+		return (1);
+	return (0);
 }
 
 void	ft_strcpy(char *dest, char *src)
