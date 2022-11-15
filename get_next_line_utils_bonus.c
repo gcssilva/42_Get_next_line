@@ -6,7 +6,7 @@
 /*   By: gsilva <gsilva@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:29:27 by gsilva            #+#    #+#             */
-/*   Updated: 2022/11/14 17:43:10 by gsilva           ###   ########.fr       */
+/*   Updated: 2022/11/15 15:14:54 by gsilva           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,13 @@ char	*ft_read(char *next, char *str, int fd)
 {
 	int		len;
 
-	str = ft_strjoin(str, next);
+	str = ft_strjoin(NULL, next);
 	if (ft_strchr(next, '\n'))
 	{
-		ft_strcpy(next, &next[ft_strlen(next)]);
+		ft_strclean(next, &next[ft_strlen(next)]);
 		return (str);
 	}
+	ft_strclean(next, &next[ft_strlen(next)]);
 	len = read(fd, next, BUFFER_SIZE);
 	if (len < 0)
 	{
@@ -70,13 +71,13 @@ char	*ft_read(char *next, char *str, int fd)
 	}
 	while (len > 0)
 	{
-		next[len] = 0;
 		str = ft_strjoin(str, next);
 		if (ft_strchr(next, '\n'))
 			break ;
+		ft_strclean(next, &next[ft_strlen(next)]);
 		len = read(fd, next, BUFFER_SIZE);
 	}
-	ft_strcpy(next, &next[ft_strlen(next)]);
+	ft_strclean(next, &next[ft_strlen(next)]);
 	return (str);
 }
 
@@ -84,6 +85,8 @@ int	ft_strchr(char *str, int c)
 {
 	int		i;
 
+	if (!str)
+		return (0);
 	i = 0;
 	while (str[i] && str[i] != c)
 		i++;
@@ -92,12 +95,16 @@ int	ft_strchr(char *str, int c)
 	return (0);
 }
 
-void	ft_strcpy(char *dest, char *src)
+void	ft_strclean(char *dest, char *src)
 {
 	size_t			i;
 
-	i = -1;
-	while (src[++i])
+	i = 0;
+	while (src[i])
+	{
 		dest[i] = src[i];
-	dest[i] = 0;
+		src[i++] = 0;
+	}
+	while (dest[i])
+		dest[i++] = 0;
 }

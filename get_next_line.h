@@ -6,7 +6,7 @@
 /*   By: gsilva <gsilva@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:29:40 by gsilva            #+#    #+#             */
-/*   Updated: 2022/11/10 17:41:01 by gsilva           ###   ########.fr       */
+/*   Updated: 2022/11/15 15:11:50 by gsilva           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ int		ft_strlen(char *str);
 
 char	*ft_read(char *next, char *str, int fd);
 
-void	ft_strcpy(char *dest, char *src);
+void	ft_strclean(char *dest, char *src);
 
 #endif

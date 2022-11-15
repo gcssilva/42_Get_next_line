@@ -6,7 +6,7 @@
 /*   By: gsilva <gsilva@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:29:06 by gsilva            #+#    #+#             */
-/*   Updated: 2022/11/14 17:43:23 by gsilva           ###   ########.fr       */
+/*   Updated: 2022/11/15 16:34:38 by gsilva           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 char	*get_next_line(int fd)
 {
 	static char	next[FOPEN_MAX][BUFFER_SIZE + 1];
-	char		*str;
 
-	str = NULL;
 	if (fd < 0 || fd > FOPEN_MAX || BUFFER_SIZE < 1)
 		return (NULL);
-	return (ft_read(next[fd], str, fd));
+	return (ft_read(next[fd], 0, fd));
 }
